@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SELFADAPT AI – Intelligent Disaster Response & Emergency Management System</title>
+  <meta name="description" content="AI-Powered Self-Adaptive Disaster Management and Real-Time Emergency Coordination System for Floods, Road Accidents, and Fire Emergencies.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js for Telemetry Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Core Theme CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- TOP NAVIGATION BAR (Visible after login) -->
+    <header class="top-nav" id="mainHeader">
+      <div class="nav-wrapper">
+        <!-- Brand Logo & Title -->
+        <div class="brand-group" id="navBrandBtn">
+          <div class="brand-logo-badge">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="brand-titles">
+            <h1>SELFADAPT AI <span class="badge-ai">AUTONOMOUS</span></h1>
+            <p>Intelligent Disaster Response & Emergency Network</p>
+          </div>
+        </div>
+
+        <!-- Telemetry & Active Status Indicator -->
+        <div class="nav-telemetry" id="navTelemetryGroup" style="display: none;">
+          <div class="location-pill" id="navLocationPill" title="Click to view/switch incident coordinates">
+            <span class="beacon"></span>
+            <span id="navLocationText">GPS: 13.0827° N, 80.2707° E</span>
+          </div>
+          <div class="adaptive-status-badge" id="navAdaptiveBadge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span id="navEngineStatus">SELF-ADAPTIVE CORE ACTIVE</span>
+          </div>
+        </div>
+
+        <!-- Navigation Actions (Profile / Sound / Logout) -->
+        <div class="nav-actions" id="navActionsGroup" style="display: none;">
+          <button class="nav-btn" id="btnToggleSound" title="Toggle Emergency Audio Broadcast">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            <span id="soundStatusText">Sound On</span>
+          </button>
+
+          <button class="nav-btn" id="btnDashboardNav" title="Go to Dashboard">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            <span>Dashboard</span>
+          </button>
+
+          <div class="user-profile-btn" id="userProfileBadge">
+            <div class="user-avatar" id="userAvatarPill">VL</div>
+            <div class="user-meta">
+              <div class="name" id="userDisplayName">Officer Varalakshmi</div>
+              <div class="role">Incident Command Officer</div>
+            </div>
+          </div>
+
+          <button class="nav-btn" id="btnLogout" title="Sign Out of Terminal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY VIEW CONTAINER -->
+    <main class="main-content">
+
+      <!-- ====================================================================
+           PAGE 1 – LOGIN / LOCATION VIEW
+           ==================================================================== -->
+      <section class="page-view active" id="page-login">
+        <div class="login-view-wrapper">
+          <div class="login-card-container">
+            <div class="login-header">
+              <div class="login-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <h2>Incident Commander Portal</h2>
+              <p>Sign in with any credentials or use standard access keys</p>
+            </div>
+
+            <form id="loginForm" onsubmit="return false;">
+              <div class="login-form-group">
+                <label for="loginEmail">Login ID / Username / Email</label>
+                <div class="input-with-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                  </svg>
+                  <input type="text" id="loginEmail" class="login-input" placeholder="varalakshmi" value="varalakshmi" required>
+                </div>
+              </div>
+
+              <div class="login-form-group">
+                <label for="loginPassword">Password / Clearance Key</label>
+                <div class="input-with-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  <input type="password" id="loginPassword" class="login-input" placeholder="murugan" value="murugan" required>
+                </div>
+              </div>
+
+              <!-- GEOLOCATION PERMISSION ACCESS BOX -->
+              <div class="location-access-box">
+                <div class="location-status-row">
+                  <span class="location-label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    Incident Geolocation:
+                  </span>
+                  <span class="badge-location-status pending" id="loginLocationBadge">
+                    <span class="beacon"></span> Awaiting Permission
+                  </span>
+                </div>
+
+                <div class="location-coords-display" id="loginCoordsDisplay">
+                  Coordinates: Not acquired. Click "Allow Location Access" below.
+                </div>
+
+                <button type="button" class="btn-location-action" id="btnRequestLocation">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/>
+                  </svg>
+                  <span>Allow Location Access (Browser GPS)</span>
+                </button>
+
+                <!-- Optional Preset Location Switcher -->
+                <div style="margin-top: 10px;">
+                  <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Or Select Demo Incident Sector:</label>
+                  <select id="selectDemoLocation" class="login-input" style="padding: 6px 10px; font-size: 0.78rem;">
+                    <option value="0">Zone Alpha - Riverside Delta (Flood Prone)</option>
+                    <option value="1">Zone Beta - Central Expressway (Accident Corridor)</option>
+                    <option value="2">Zone Gamma - Petrochemical Complex (Fire Hazard)</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-signin-submit" id="btnSubmitLogin">
+                <span>Authorize & Enter Incident Terminal</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+
+              <div class="demo-credentials-helper">
+                <span>Default: ID <code>varalakshmi</code> / Pass <code>murugan</code> (Any input accepted)</span>
+                <button type="button" class="btn-quick-demo" id="btnQuickDemoLogin">Fill Defaults</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           PAGE 2 – MAIN DASHBOARD
+           ==================================================================== -->
+      <section class="page-view" id="page-dashboard">
+        <!-- Top Banner / Situation Overview -->
+        <div class="dashboard-header-banner">
+          <div class="banner-left">
+            <h2>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              Active Emergency Monitoring Command
+            </h2>
+            <p>Real-time AI situational awareness, multi-agency map locator & self-adaptive response engine.</p>
+          </div>
+          <div class="banner-right">
+            <div class="stat-chip">
+              <div class="val" id="statActiveHazards">3 Active</div>
+              <div class="lbl">Disaster Sectors</div>
+            </div>
+            <div class="stat-chip">
+              <div class="val" id="statResponseUnits" style="color: #34D399;">14 Units</div>
+              <div class="lbl">Hospitals, Police & Fire</div>
+            </div>
+            <div class="stat-chip">
+              <div class="val" id="statAdaptiveStatus" style="color: #60A5FA;">Online</div>
+              <div class="lbl">AI Adaptive Core</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Major Disaster Cards (Formal, Clean, Professional) -->
+        <div class="disaster-cards-grid">
+
+          <!-- 1. FLOOD DISASTER CARD -->
+          <div class="disaster-major-card card-flood" id="cardFloodProtocol">
+            <div class="card-cover-container">
+              <img src="assets/flood_cover.jpg" alt="Flood Emergency" class="card-cover-img">
+              <div class="card-cover-overlay"></div>
+              <span class="card-badge-status badge-risk-high" id="dashboardFloodBadge">HIGH RISK (SURGE 4.15m)</span>
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <div class="disaster-icon-box icon-flood">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3>1. FLOOD</h3>
+                  <small style="color: #06B6D4; font-weight: 600;">Inundation Map & Shelter Routing</small>
+                </div>
+              </div>
+              <p class="card-desc">
+                Predict inundation early using rainfall, water discharge, and terrain data. Dynamic 15-minute zone expansion forecasting, flooded road bypass, and safe shelter navigation.
+              </p>
+              <div class="card-telemetry-preview">
+                <div class="metric-item">
+                  <span class="metric-lbl">Rainfall Level</span>
+                  <span class="metric-val" id="dashRainVal">78.5 mm/h</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-lbl">Water Gauge</span>
+                  <span class="metric-val" id="dashWaterVal">4.15m (Danger: 3.8m)</span>
+                </div>
+              </div>
+              <button type="button" class="btn-card-action" onclick="app.navigateTo('page-flood')">
+                <span>View Details & Open Flood Map</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. ROAD ACCIDENT DISASTER CARD -->
+          <div class="disaster-major-card card-accident" id="cardAccidentProtocol">
+            <div class="card-cover-container">
+              <img src="assets/accident_demo1.jpg" alt="Road Accident Response" class="card-cover-img">
+              <div class="card-cover-overlay"></div>
+              <span class="card-badge-status badge-risk-active" id="dashboardAccidentBadge">CRITICAL LEVEL 4</span>
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <div class="disaster-icon-box icon-accident">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3>2. ROAD ACCIDENT</h3>
+                  <small style="color: #60A5FA; font-weight: 600;">Crash AI & Hospital Locator</small>
+                </div>
+              </div>
+              <p class="card-desc">
+                Automated crash location detection, AI photo severity scanning, real-time hospital ICU capacity matching, and autonomous ambulance re-routing upon hospital saturation.
+              </p>
+              <div class="card-telemetry-preview">
+                <div class="metric-item">
+                  <span class="metric-lbl">Assigned Hospital</span>
+                  <span class="metric-val" id="dashHospVal">Apollo Memorial</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-lbl">Ambulance ETA</span>
+                  <span class="metric-val" id="dashEtaVal">4.5 mins (Corridor A)</span>
+                </div>
+              </div>
+              <button type="button" class="btn-card-action" onclick="app.navigateTo('page-accident')">
+                <span>View Details & Open Accident Map</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. FIRE ACCIDENT DISASTER CARD -->
+          <div class="disaster-major-card card-fire" id="cardFireProtocol">
+            <div class="card-cover-container">
+              <img src="assets/fire_cover.jpg" alt="Fire Emergency Response" class="card-cover-img">
+              <div class="card-cover-overlay"></div>
+              <span class="card-badge-status badge-risk-hazmat" id="dashboardFireBadge">HAZMAT HAZARD L3</span>
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <div class="disaster-icon-box icon-fire">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3>3. FIRE ACCIDENT</h3>
+                  <small style="color: #F97316; font-weight: 600;">Plume Modeling & Upwind Evacuation</small>
+                </div>
+              </div>
+              <p class="card-desc">
+                Multi-scenario containment (Gas, Residential, Commercial, Industrial). Dynamic atmospheric wind plume dispersion modeling and self-adaptive safe evacuation corridor recalculation.
+              </p>
+              <div class="card-telemetry-preview">
+                <div class="metric-item">
+                  <span class="metric-lbl">Atmospheric Wind</span>
+                  <span class="metric-val" id="dashWindVal">NE 26 km/h</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-lbl">Hazard Perimeter</span>
+                  <span class="metric-val" id="dashPlumeVal">1.8 km Downwind</span>
+                </div>
+              </div>
+              <button type="button" class="btn-card-action" onclick="app.navigateTo('page-fire')">
+                <span>View Details & Open Fire Map</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- EMERGENCY HOTLINES RIBBON -->
+        <div class="emergency-hotlines-ribbon">
+          <div class="hotline-item">
+            <span class="hotline-badge">112</span>
+            <span>National Emergency Helpline</span>
+          </div>
+          <div class="hotline-item">
+            <span class="hotline-badge">1078</span>
+            <span>NDRF Disaster Control Room</span>
+          </div>
+          <div class="hotline-item">
+            <span class="hotline-badge">108</span>
+            <span>Trauma Ambulance Dispatch</span>
+          </div>
+          <div class="hotline-item">
+            <span class="hotline-badge">101</span>
+            <span>Fire & Rescue Headquarters</span>
+          </div>
+          <div class="hotline-item">
+            <span class="hotline-badge">100</span>
+            <span>Police Rapid Emergency</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           PAGE 3 – FLOOD MANAGEMENT VIEW
+           ==================================================================== -->
+      <section class="page-view" id="page-flood">
+        <!-- Page Header -->
+        <div class="page-top-bar">
+          <div class="page-back-group">
+            <button type="button" class="btn-back-dashboard" onclick="app.navigateTo('page-dashboard')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+              </svg>
+              <span>Back to Dashboard</span>
+            </button>
+            <div class="page-titles">
+              <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="2">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                </svg>
+                Flood Disaster Management & Inundation Intelligence
+              </h2>
+              <p>Predictive inundation modeling, flooded road avoidance, shelter navigation, and multi-agency dispatch.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SELF-ADAPTIVE RESPONSE TRIGGER BANNER -->
+        <div class="self-adaptive-callout">
+          <div class="adaptive-info-left">
+            <div class="adaptive-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+              </svg>
+            </div>
+            <div>
+              <h4>SELF-ADAPTIVE AI ENGINE: FLOOD CONTINGENCY PROTOCOL</h4>
+              <p id="floodAdaptiveStatusText">Monitoring river gauge & rainfall runoff. Real-time dynamic rerouting enabled.</p>
+            </div>
+          </div>
+          <button type="button" class="btn-adaptive-trigger" id="btnTriggerFloodSurge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            <span id="floodSurgeBtnLabel">Simulate Flash Surge (+40cm Inundation)</span>
+          </button>
+        </div>
+
+        <!-- Clean Tabs Navigation -->
+        <div class="tabs-navigation-bar">
+          <button class="tab-nav-btn active" onclick="app.switchTab('flood', 'tab-flood-prediction', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+            <span>1. Early Prediction & Water Level</span>
+          </button>
+          <button class="tab-nav-btn" onclick="app.switchTab('flood', 'tab-flood-zone', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+            </svg>
+            <span>2. Dynamic Zone & Flood Shelter Map</span>
+          </button>
+          <button class="tab-nav-btn" onclick="app.switchTab('flood', 'tab-flood-shelter', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>3. Shelter Routes & Rescue Dispatch</span>
+          </button>
+        </div>
+
+        <!-- TAB PANE 1: EARLY PREDICTION & REASONING -->
+        <div class="tab-pane-content active" id="tab-flood-prediction">
+          <div class="tactical-grid-2col">
+            <!-- Left: Prediction Gauges & Live Chart -->
+            <div class="tactical-card">
+              <div class="tactical-card-header">
+                <h3>Early Inundation Prediction</h3>
+                <span class="risk-level-tag high" id="floodRiskStatusTag">HIGH RISK</span>
+              </div>
+              <div class="risk-meter-box">
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">Predictive Inundation Probability Score</div>
+                <div class="risk-level-tag high" id="floodScoreDisplay">84 / 100</div>
+                <div class="risk-score-bar">
+                  <div class="risk-score-fill" id="floodScoreFill" style="width: 84%;"></div>
+                </div>
+              </div>
+
+              <!-- Telemetry Metrics -->
+              <div class="telemetry-row">
+                <div class="telemetry-box">
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Current Rainfall Rate</div>
+                  <div class="tele-num" id="floodRainTelemetry">78.5 <small>mm/h</small></div>
+                  <div style="font-size: 0.72rem; color: #F59E0B;">Heavy Downpour Detected</div>
+                </div>
+                <div class="telemetry-box">
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">River Water Level</div>
+                  <div class="tele-num" id="floodWaterTelemetry">4.15 <small>meters</small></div>
+                  <div style="font-size: 0.72rem; color: #EF4444;">Danger Limit: 3.80m</div>
+                </div>
+              </div>
+
+              <!-- Live Chart Container -->
+              <div style="margin-top: 18px; height: 180px;">
+                <canvas id="floodTelemetryChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Right: Reason for Alert (AI Causality Reasoning) & Multi-Agency Status -->
+            <div class="tactical-card">
+              <div class="tactical-card-header">
+                <h3>AI Causality Analysis: Reason for Alert</h3>
+                <span style="font-size: 0.72rem; color: #60A5FA; font-family: var(--font-mono);">AI INFERENCE MODEL v4.2</span>
+              </div>
+              <p style="font-size: 0.82rem; margin-bottom: 14px;">
+                The AI system synthesizes catchment meteorology, downstream tidal gates, and terrain elevation gradients to derive risk factors:
+              </p>
+              <ul class="reasoning-list" id="floodReasoningList">
+                <li>
+                  <span>⛈️</span>
+                  <span>Upper catchment rainfall spiked by +145% in past 2 hours (88 mm/h peak).</span>
+                </li>
+                <li>
+                  <span>🌊</span>
+                  <span>River discharge rate crossed critical 2,650 cusecs safety limit.</span>
+                </li>
+                <li>
+                  <span>🚪</span>
+                  <span>Downstream tidal barrier backflow detected at Coastal Outfall #3.</span>
+                </li>
+                <li>
+                  <span>🌱</span>
+                  <span>Soil saturation index reached 94% (Zero drainage absorption capacity).</span>
+                </li>
+              </ul>
+
+              <!-- Failure / Emergency Escalation Notice -->
+              <div style="margin-top: 20px; background: var(--color-critical-bg); border: 1px solid var(--color-critical-border); border-radius: var(--radius-md); padding: 14px;">
+                <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #F87171; font-size: 0.88rem; margin-bottom: 4px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                  </svg>
+                  <span>Multi-Agency Emergency Notification Active</span>
+                </div>
+                <p style="font-size: 0.78rem; color: var(--text-primary);">
+                  Automated high-risk broadcast sent to: <strong>City Police Traffic Division</strong>, <strong>General Hospital Trauma Team</strong>, and <strong>NDRF 4th Battalion</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB PANE 2: DYNAMIC ZONE & FLOOD SHELTER MAP -->
+        <div class="tab-pane-content" id="tab-flood-zone">
+          <div class="tactical-grid-2col">
+            <!-- Left: Dynamic Visual Tactical Map with Shelters and Roadblocks -->
+            <div class="tactical-card">
+              <div class="tactical-card-header">
+                <h3>Dynamic Flood Zone & Safe Shelter Map</h3>
+                <span style="font-size: 0.75rem; color: #38BDF8; font-weight: 600;" id="floodZoneWarningText">Expansion in 15 mins</span>
+              </div>
+              <div class="map-canvas-frame">
+                <canvas id="floodTacticalCanvas"></canvas>
+              </div>
+              <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); flex-wrap: wrap; gap: 6px;">
+                <span>🌊 Cyan/Red: Flood Basin & Expansion</span>
+                <span>🏛️ Safe High-Ground Shelters</span>
+                <span>🚓 Police Roadblocks</span>
+              </div>
+            </div>
+
+            <!-- Right: Submerged Road Detection & Alternative Safe Route -->
+            <div class="tactical-card">
+              <div class="tactical-card-header">
+                <h3>Road Risk Detection & Passability</h3>
+                <span class="road-badge warning">AI Traffic Sensor Live</span>
+              </div>
+              <table class="tactical-table">
+                <thead>
+                  <tr>
+                    <th>Road Arterial</th>
+                    <th>Water Depth</th>
+                    <th>Passability</th>
+                    <th>Risk Status</th>
+                  </tr>
+                </thead>
+                <tbody id="floodRoadsTableBody">
+                  <tr>
+                    <td>Riverbank Blvd</td>
+                    <td>0.85m</td>
+                    <td>BLOCKED</td>
+                    <td><span class="road-badge blocked">CRITICAL</span></td>
+                  </tr>
+                  <tr>
+                    <td>Canal Flyover Ramp</td>
+                    <td>0.35m</td>
+                    <td>HEAVY ONLY</td>
+                    <td><span class="road-badge warning">WARNING</span></td>
+                  </tr>
+                  <tr>
+                    <td>GT Expressway</td>
+                    <td>0.00m</td>
+                    <td>ALL VEHICLES</td>
+                    <td><span class="road-badge safe">SAFE</span></td>
+                  </tr>
+                  <tr>
+                    <td>Sector 4 Ridge</td>
+                    <td>0.00m</td>
+                    <td>ALL VEHICLES</td>
+                    <td><span class="road-badge safe">SAFE</span></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Safe Route Recommendation Box -->
+              <div style="margin-top: 18px; background: var(--bg-card); border: 1px solid #10B981; border-radius: var(--radius-md); padding: 14px;" id="floodSafeRouteBox">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <span style="font-weight: 700; color: #34D399; font-size: 0.88rem;" id="floodRouteTitle">Primary Recommended Safe Route</span>
+                  <span class="road-badge safe" id="floodRouteStatus">OPTIMAL ELEVATION</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-primary); margin-bottom: 8px;" id="floodRouteDesc">
+                  Via Sector 4 Ridge & GT Expressway (Distance: 3.8 km | ETA: 9 mins | Elevation: +16m MSL).
+                </p>
+                <div style="font-size: 0.75rem; color: var(--text-secondary); display: flex; gap: 14px;">
+                  <span>Hazards Avoided: <strong>3 Submerged Pockets</strong></span>
+                  <span>Elevation Clearance: <strong>High Ridge</strong></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB PANE 3: SHELTER ROUTES & RESCUE DISPATCH -->
+        <div class="tab-pane-content" id="tab-flood-shelter">
+          <div class="tactical-grid-2col">
+            <!-- Left: Shelter Finder & Status -->
+            <div class="tactical-card">
+              <div class="tactical-card-header">
+                <h3>Nearest Safe Flood Shelters (High Ground)</h3>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Live Occupancy</span>
+              </div>
+              <div id="floodSheltersList">
+                <div class="shelter-card active-shelter" id="shelterCard-1">
+                  <div>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 2px;">🏛️ St. Xavier Community High Ground Arena</h4>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary);">Distance: 2.1 km | Elevation: 19.4m MSL | Med Support: Full Paramedic Unit</p>
+                    <div style="font-size: 0.75rem; color: #34D399; font-weight: 600; margin-top: 4px;">Capacity: 480 / 600 Occupied (80%)</div>
+                  </div>
+                  <button class="nav-btn btn-primary" style="font-size: 0.78rem; padding: 6px 12px;" onclick="app.selectShelter('St. Xavier Arena')">Route Here</button>
+                </div>
+
+                <div class="shelter-card" id="shelterCard-2">
+                  <div>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 2px;">🏛️ North Civic Disaster Relief Center</h4>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary);">Distance: 4.6 km | Elevation: 28.1m High Ridge | Helipad on site</p>
+                    <div style="font-size: 0.75rem; color: #60A5FA; font-weight: 600; margin-top: 4px;">Capacity: 120 / 800 Occupied (15% - High Space)</div>
+                  </div>
+                  <button class="nav-btn" style="font-size: 0.78rem; padding: 6px 12px;" onclick="app.selectShelter('North Civic Center')">Route Here</button>
+                </div>
+
+                <div class="shelter-card" id="shelterCard-3">
+                  <div>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 2px;">🏛️ East Sector Polytechnic Dome</h4>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary);">Distance: 6.2 km | Elevation: 22.0m MSL | Basic First Aid & Food Store</p>
+                    <div style="font-size: 0.75rem; color: #94A3B8; font-weight: 600; margin-top: 4px;">Capacity: 50 / 400 Occupied (12%)</div>
+                  </div>
+                  <button class="nav-btn" style="font-size: 0.78rem; padding: 6px 12px;" onclick="app.selectShelter('East Polytechnic Dome')">Route Here</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Rescue Team Request Hub -->
+            <div class="tactical-card">
+              <div class="tactical-card-header">
+                <h3>Request Emergency Rescue Assistance</h3>
+                <span class="badge-risk-high" style="font-size: 0.72rem; padding: 2px 8px; border-radius: 99px;">RAPID DISPATCH</span>
+              </div>
+              <p style="font-size: 0.82rem; margin-bottom: 14px;">Select the required rescue unit to mobilize immediate response to your coordinates:</p>
+
+              <div class="rescue-team-selector">
+                <div class="rescue-opt-btn selected" id="optRescueBoat" onclick="app.selectRescueOpt('NDRF Inflatable Rescue Boat')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 20a6 6 0 0 0 12 0 6 6 0 0 0 10 0M5 14l7-10 7 10H5z"/>
+                  </svg>
+                  <div style="font-weight: 600; font-size: 0.82rem;">NDRF Boat</div>
+                  <small style="color: var(--text-muted); font-size: 0.68rem;">Water Evacuation</small>
+                </div>
+
+                <div class="rescue-opt-btn" id="optRescueAmb" onclick="app.selectRescueOpt('Paramedic Trauma Ambulance')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+                  </svg>
+                  <div style="font-weight: 600; font-size: 0.82rem;">Ambulance</div>
+                  <small style="color: var(--text-muted); font-size: 0.68rem;">Medical Support</small>
+                </div>
+
+                <div class="rescue-opt-btn" id="optRescuePolice" onclick="app.selectRescueOpt('Police Tactical Evac Unit')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                  <div style="font-weight: 600; font-size: 0.82rem;">Police Unit</div>
+                  <small style="color: var(--text-muted); font-size: 0.68rem;">Perimeter Safety</small>
+                </div>
+              </div>
+
+              <div class="login-form-group">
+                <label for="floodRescueNotes">Additional Critical Details (Number of trapped persons, medical needs):</label>
+                <input type="text" id="floodRescueNotes" class="login-input" placeholder="e.g. 3 adults + 1 elderly trapped on 1st floor balcony" value="3 citizens stranded at waterlogged ground floor.">
+              </div>
+
+              <button type="button" class="btn-signin-submit" id="btnDispatchFloodRescue" onclick="app.dispatchFloodRescue()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+                <span>Dispatch Emergency Rescue Team</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           PAGE 4 – ROAD ACCIDENT MANAGEMENT VIEW
+           ==================================================================== -->
+      <section class="page-view" id="page-accident">
+        <!-- Page Header -->
+        <div class="page-top-bar">
+          <div class="page-back-group">
+            <button type="button" class="btn-back-dashboard" onclick="app.navigateTo('page-dashboard')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+              </svg>
+              <span>Back to Dashboard</span>
+            </button>
+            <div class="page-titles">
+              <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/>
+                </svg>
+                Road Accident Response & Emergency Facility Locator Map
+              </h2>
+              <p>Identify crash sites, find nearby hospitals, police stations & fire stations with real-time green corridor routing.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SELF-ADAPTIVE RESPONSE TRIGGER BANNER -->
+        <div class="self-adaptive-callout">
+          <div class="adaptive-info-left">
+            <div class="adaptive-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+              </svg>
+            </div>
+            <div>
+              <h4>SELF-ADAPTIVE AI ENGINE: HOSPITAL CAPACITY FAILOVER</h4>
+              <p id="accidentAdaptiveStatusText">Connected to regional trauma ICU bed registries. Autonomous rerouting ready.</p>
+            </div>
+          </div>
+          <button type="button" class="btn-adaptive-trigger" id="btnTriggerHospitalSaturation">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>
+            </svg>
+            <span id="hospitalDivertBtnLabel">Simulate Hospital A ICU Saturation (Full / Divert)</span>
+          </button>
+        </div>
+
+        <!-- Step-by-Step Response Pipeline Stepper -->
+        <div class="stepper-pipeline-bar">
+          <div class="step-node completed" onclick="app.setAccidentStep(1)">
+            <div class="step-num">1</div>
+            <span>Accident Detected</span>
+          </div>
+          <div class="step-arrow-separator">→</div>
+          <div class="step-node active" onclick="app.setAccidentStep(2)">
+            <div class="step-num">2</div>
+            <span>Photo AI Analysis</span>
+          </div>
+          <div class="step-arrow-separator">→</div>
+          <div class="step-node" onclick="app.setAccidentStep(3)">
+            <div class="step-num">3</div>
+            <span>Nearby Hospitals</span>
+          </div>
+          <div class="step-arrow-separator">→</div>
+          <div class="step-node" onclick="app.setAccidentStep(4)">
+            <div class="step-num">4</div>
+            <span>ICU Availability</span>
+          </div>
+          <div class="step-arrow-separator">→</div>
+          <div class="step-node" onclick="app.setAccidentStep(5)">
+            <div class="step-num">5</div>
+            <span>Smart Ambulance Route</span>
+          </div>
+          <div class="step-arrow-separator">→</div>
+          <div class="step-node" onclick="app.setAccidentStep(6)">
+            <div class="step-num">6</div>
+            <span>Emergency Broadcast</span>
+          </div>
+        </div>
+
+        <!-- Section A: AI Photo Upload & Severity Analysis -->
+        <div class="photo-analysis-zone" style="margin-bottom: 24px;">
+          <!-- Dropzone & Crash Evidence -->
+          <div class="tactical-card">
+            <div class="tactical-card-header">
+              <h3>Accident Photo Evidence (AI Vision Scanner)</h3>
+              <span style="font-size: 0.72rem; color: var(--text-muted);">Upload or Click Sample</span>
+            </div>
+
+            <div class="upload-dropzone-box" id="accidentDropzone" onclick="document.getElementById('accidentFileInput').click()">
+              <input type="file" id="accidentFileInput" accept="image/*" style="display: none;" onchange="app.handleAccidentPhotoUpload(event)">
+              <img src="assets/accident_demo1.jpg" alt="Crash Evidence" id="previewCrashImg" class="preview-crash-img">
+
+              <!-- Laser Scan Overlay Animation -->
+              <div class="ai-scan-overlay" id="aiScanOverlay">
+                <div class="ai-scan-line"></div>
+              </div>
+
+              <div style="margin-top: 12px; font-size: 0.78rem; color: var(--text-muted);">
+                Click to browse photo or drag & drop crash evidence
+              </div>
+            </div>
+
+            <!-- Demo sample thumbnails for quick 1-click test -->
+            <div style="margin-top: 14px;">
+              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 6px;">Test with Pre-Captured Incidents:</div>
+              <div class="preset-crash-thumbnails">
+                <button type="button" class="thumb-preset-btn active" id="thumbPreset1" onclick="app.selectPresetCrash(0)">
+                  <img src="assets/accident_demo1.jpg" alt="Severe Crash">
+                  <div style="font-size: 0.65rem; color: #F87171; text-align: center; margin-top: 2px;">Severe (L4)</div>
+                </button>
+                <button type="button" class="thumb-preset-btn" id="thumbPreset2" onclick="app.selectPresetCrash(1)">
+                  <img src="assets/accident_demo2.jpg" alt="Minor Bump">
+                  <div style="font-size: 0.65rem; color: #34D399; text-align: center; margin-top: 2px;">Minor (L1)</div>
+                </button>
+                <button type="button" class="thumb-preset-btn" id="thumbPreset3" onclick="app.selectPresetCrash(2)">
+                  <img src="assets/accident_demo3.jpg" alt="Rollover Crash">
+                  <div style="font-size: 0.65rem; color: #EF4444; text-align: center; margin-top: 2px;">Rollover (L5)</div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Diagnostics Output Card -->
+          <div class="ai-analysis-results-card">
+            <div class="tactical-card-header">
+              <h3>AI Computer Vision Diagnostics</h3>
+              <button class="nav-btn" style="font-size: 0.75rem; padding: 4px 10px;" onclick="app.reanalyzeCrashImage()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                </svg>
+                <span>Re-Scan</span>
+              </button>
+            </div>
+
+            <div class="severity-score-badge critical" id="crashSeverityBadge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <span id="crashSeverityText">CRITICAL (Level 4/5)</span>
+            </div>
+
+            <div class="vision-metric-row">
+              <span class="lbl">Vehicles Detected:</span>
+              <span class="val" id="crashVehiclesVal">2 Vehicles (Sedan + SUV)</span>
+            </div>
+            <div class="vision-metric-row">
+              <span class="lbl">Airbag Deployment:</span>
+              <span class="val" id="crashAirbagVal" style="color: #F87171;">YES (Dual Frontal & Side)</span>
+            </div>
+            <div class="vision-metric-row">
+              <span class="lbl">Structural Deformation:</span>
+              <span class="val" id="crashDeformationVal">Severe Engine Compartment Intrusion</span>
+            </div>
+            <div class="vision-metric-row">
+              <span class="lbl">Estimated Casualties:</span>
+              <span class="val" id="crashCasualtiesVal" style="color: #FBBF24;">2 to 3 Injured Occupants</span>
+            </div>
+            <div class="vision-metric-row">
+              <span class="lbl">Detected Hazards:</span>
+              <span class="val" id="crashHazardsVal">Fuel Leakage + Glass Shatter</span>
+            </div>
+            <div style="margin-top: 14px; background: var(--bg-card); padding: 10px; border-radius: 6px; font-size: 0.78rem;">
+              <span style="color: var(--text-muted); display: block; margin-bottom: 2px;">Automated Dispatch Prescription:</span>
+              <strong style="color: #60A5FA;" id="crashDispatchVal">ALS Trauma Ambulance + Heavy Hydraulic Extrication Tender</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section B: Interactive Multi-Layer Emergency Map with Filter Buttons -->
+        <div class="tactical-card" style="margin-bottom: 24px;">
+          <div class="tactical-card-header" style="flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3>Interactive Emergency Facility & Incident Map</h3>
+              <p style="font-size: 0.78rem; color: var(--text-muted);">Identify crash site, nearby hospitals, police stations, and fire units</p>
+            </div>
+
+            <!-- Map Layer Filters -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button class="nav-btn btn-primary" style="font-size: 0.75rem; padding: 6px 12px;" onclick="app.setMapLayerFilter('all', this)">🔘 All Layers</button>
+              <button class="nav-btn" style="font-size: 0.75rem; padding: 6px 12px;" onclick="app.setMapLayerFilter('hospitals', this)">🏥 Hospitals</button>
+              <button class="nav-btn" style="font-size: 0.75rem; padding: 6px 12px;" onclick="app.setMapLayerFilter('police', this)">🚓 Police Stations</button>
+              <button class="nav-btn" style="font-size: 0.75rem; padding: 6px 12px;" onclick="app.setMapLayerFilter('fire', this)">🚒 Fire Stations</button>
+            </div>
+          </div>
+
+          <!-- Canvas Map Viewport -->
+          <div class="map-canvas-frame">
+            <canvas id="accidentTacticalCanvas"></canvas>
+          </div>
+
+          <div style="margin-top: 12px; display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); flex-wrap: wrap; gap: 10px;">
+            <span>💥 <strong>Crash Site (KM 42)</strong></span>
+            <span>🏥 <strong>Nearby Hospitals (ICU Matrix)</strong></span>
+            <span>🚓 <strong>Police Patrol & Corridor Clearance</strong></span>
+            <span>🚒 <strong>Fire & Rescue Stations</strong></span>
+          </div>
+        </div>
+
+        <!-- Section C: Nearby Facility Matrices (Hospitals, Police, Fire) -->
+        <div class="tactical-grid-3col">
+          <!-- 1. Nearby Hospitals -->
+          <div class="tactical-card">
+            <div class="tactical-card-header">
+              <h3>🏥 Nearby Hospitals</h3>
+              <span style="font-size: 0.72rem; color: #10B981; font-weight: 700;">ICU Live</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.8rem;">
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid #10B981;">
+                <div style="font-weight: 700; color: #FFFFFF;">Apollo City Memorial</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">2.1 km (4.5 mins) | Ph: +91 44 2829 0200</div>
+                <div style="color: #34D399; font-weight: 600; font-size: 0.75rem; margin-top: 2px;" id="hosp1Icu">3 ICU Beds Free (Optimal)</div>
+              </div>
+
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid #38BDF8;">
+                <div style="font-weight: 700; color: #FFFFFF;">St. Jude Apex Medical</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">3.8 km (7.2 mins) | Ph: +91 44 2829 0300</div>
+                <div style="color: #60A5FA; font-weight: 600; font-size: 0.75rem; margin-top: 2px;">8 ICU Beds Free (Standby)</div>
+              </div>
+
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid #64748B;">
+                <div style="font-weight: 700; color: #FFFFFF;">Metro District General</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">5.9 km (12 mins) | Ph: +91 44 2829 0400</div>
+                <div style="color: #EF4444; font-size: 0.75rem; margin-top: 2px;">0 Beds Free (Overloaded)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Nearby Police Stations -->
+          <div class="tactical-card">
+            <div class="tactical-card-header">
+              <h3>🚓 Nearby Police Stations</h3>
+              <span style="font-size: 0.72rem; color: #60A5FA; font-weight: 700;">Corridor Ready</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.8rem;">
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid #60A5FA;">
+                <div style="font-weight: 700; color: #FFFFFF;">Traffic Control HQ Div 1</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">1.2 km (3 mins) | Ph: +91 44 2345 2001</div>
+                <div style="color: #60A5FA; font-size: 0.75rem; margin-top: 2px;">Traffic Signal Synchronization Clear</div>
+              </div>
+
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid #38BDF8;">
+                <div style="font-weight: 700; color: #FFFFFF;">Highway Patrol Post #12</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">0.8 km (2 mins) | Ph: +91 44 2345 2002</div>
+                <div style="color: #34D399; font-size: 0.75rem; margin-top: 2px;">On-Scene Crash Interceptor & Cordon</div>
+              </div>
+
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid #64748B;">
+                <div style="font-weight: 700; color: #FFFFFF;">Sector 4 Precinct</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">2.6 km (5 mins) | Ph: +91 44 2345 2003</div>
+                <div style="color: #94A3B8; font-size: 0.75rem; margin-top: 2px;">Standby Rapid Cordon Squad</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Nearby Fire Stations -->
+          <div class="tactical-card">
+            <div class="tactical-card-header">
+              <h3>🚒 Nearby Fire Stations</h3>
+              <span style="font-size: 0.72rem; color: #F97316; font-weight: 700;">Rescue Units</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.8rem;">
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid #F97316;">
+                <div style="font-weight: 700; color: #FFFFFF;">Central Fire HQ (Station 1)</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">1.9 km (4 mins) | Ph: +91 44 2854 0101</div>
+                <div style="color: #F97316; font-size: 0.75rem; margin-top: 2px;">54m Aerial Platform + Hydraulic Cutters</div>
+              </div>
+
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid #FB923C;">
+                <div style="font-weight: 700; color: #FFFFFF;">Hazmat Fire Brigade #4</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">2.8 km (5.5 mins) | Ph: +91 44 2854 0104</div>
+                <div style="color: #FB923C; font-size: 0.75rem; margin-top: 2px;">AFFF Chemical Foam Cannon Ready</div>
+              </div>
+
+              <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; border-left: 3px solid #64748B;">
+                <div style="font-weight: 700; color: #FFFFFF;">Suburban Fire Unit #7</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">3.5 km (7 mins) | Ph: +91 44 2854 0107</div>
+                <div style="color: #94A3B8; font-size: 0.75rem; margin-top: 2px;">Fast Attack Water Mist Tender</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Emergency Broadcast Button Bar -->
+        <div style="margin-top: 20px;">
+          <button type="button" class="btn-signin-submit" id="btnBroadcastAccident" onclick="app.broadcastAccidentAlert()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <span>Broadcast Priority Alert to All Connected Emergency Facilities (Hospital + Police + Rescue)</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           PAGE 5 – FIRE ACCIDENT MANAGEMENT VIEW
+           ==================================================================== -->
+      <section class="page-view" id="page-fire">
+        <!-- Page Header -->
+        <div class="page-top-bar">
+          <div class="page-back-group">
+            <button type="button" class="btn-back-dashboard" onclick="app.navigateTo('page-dashboard')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+              </svg>
+              <span>Back to Dashboard</span>
+            </button>
+            <div class="page-titles">
+              <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2">
+                  <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                </svg>
+                Fire Accident & Hazmat Plume Management
+              </h2>
+              <p>Multi-scenario fire containment, dynamic atmospheric plume dispersion, and upwind evacuation routing.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SELF-ADAPTIVE RESPONSE TRIGGER BANNER -->
+        <div class="self-adaptive-callout">
+          <div class="adaptive-info-left">
+            <div class="adaptive-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2 6.3-6.4 2 2-6.3z"/>
+              </svg>
+            </div>
+            <div>
+              <h4>SELF-ADAPTIVE AI ENGINE: ATMOSPHERIC WIND & PLUME DISPERSION</h4>
+              <p id="fireAdaptiveStatusText">Sensors tracking wind vector at 26 km/h NE. Real-time upwind evacuation corridor computed.</p>
+            </div>
+          </div>
+          <button type="button" class="btn-adaptive-trigger" id="btnTriggerWindShift">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+            <span id="windShiftBtnLabel">Simulate Sudden Wind Shift (NE → SW 38 km/h)</span>
+          </button>
+        </div>
+
+        <!-- 4 Fire Scenario Selectors -->
+        <div class="fire-scenarios-selector-grid">
+          <div class="scenario-pill-btn" id="scBtn-gas" onclick="app.selectFireScenario('fire-gas')">
+            <div class="sc-title">🛢️ 1. Gas Leak / Gas Fire</div>
+            <div class="sc-type">Hazmat Class 2 Flammable Vapor</div>
+          </div>
+          <div class="scenario-pill-btn" id="scBtn-house" onclick="app.selectFireScenario('fire-house')">
+            <div class="sc-title">🏠 2. Residential / House</div>
+            <div class="sc-type">Class A Combustibles & Smoke</div>
+          </div>
+          <div class="scenario-pill-btn" id="scBtn-shop" onclick="app.selectFireScenario('fire-shop')">
+            <div class="sc-title">🏬 3. Commercial / Shop</div>
+            <div class="sc-type">Class A/B Mixed Retail Flashover</div>
+          </div>
+          <div class="scenario-pill-btn active" id="scBtn-industrial" onclick="app.selectFireScenario('fire-industrial')">
+            <div class="sc-title">🏭 4. Industrial Chemical Fire</div>
+            <div class="sc-type">Petrochemical BLEVE & Plume</div>
+          </div>
+        </div>
+
+        <!-- Main Fire Analysis Content Grid -->
+        <div class="tactical-grid-2col">
+          <!-- Left: Tactical Plume Dispersion Map -->
+          <div class="tactical-card">
+            <div class="tactical-card-header">
+              <h3 id="fireMapTitle">Industrial Plume Dispersion & Evacuation Map</h3>
+              <span class="road-badge blocked" id="firePlumeBadge">● TOXIC PLUME ACTIVE</span>
+            </div>
+            <div class="map-canvas-frame">
+              <canvas id="fireTacticalCanvas"></canvas>
+            </div>
+            <div style="margin-top: 10px; display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); flex-wrap: wrap; gap: 6px;">
+              <span>🔥 Fire Origin & Hazardous Plume</span>
+              <span>🚒 Hazmat Fire Station #4</span>
+              <span>✔ Upwind Safe Route</span>
+            </div>
+          </div>
+
+          <!-- Right: Scenario Telemetry & Environmental Compass -->
+          <div class="tactical-card">
+            <div class="tactical-card-header">
+              <h3 id="fireScenarioHeading">Industrial Chemical Fire Protocol</h3>
+              <span class="badge-risk-hazmat" id="fireRiskBadge">CRITICAL LEVEL 4</span>
+            </div>
+
+            <!-- Environmental Wind Compass Widget -->
+            <div class="environmental-compass-widget" id="fireCompassWidget">
+              <div class="compass-dial">
+                <div class="compass-needle" id="compassNeedle" style="transform: rotate(45deg);"></div>
+                <div class="compass-center-pin"></div>
+              </div>
+              <div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Atmospheric Wind Vector</div>
+                <div style="font-size: 1.25rem; font-weight: 700; color: #F59E0B;" id="compassWindReadout">NE 45° (26 km/h)</div>
+                <div style="font-size: 0.72rem; color: var(--text-secondary);" id="compassPlumeReadout">Plume Length: 1.8 km Downwind</div>
+              </div>
+            </div>
+
+            <!-- Detailed Scenario Parameters -->
+            <div class="vision-metric-row">
+              <span class="lbl">Suppression Agent:</span>
+              <span class="val" id="fireSuppressionVal" style="color: #60A5FA;">AFFF Chemical Foam Cannon</span>
+            </div>
+            <div class="vision-metric-row">
+              <span class="lbl">Safety Exclusion Cordon:</span>
+              <span class="val" id="firePerimeterVal">1,200m Downwind Toxic Zone</span>
+            </div>
+            <div class="vision-metric-row">
+              <span class="lbl">Toxic Gas Concentration:</span>
+              <span class="val" id="fireGasVal" style="color: #F87171;">SO₂ / VOCs @ 18.4 ppm</span>
+            </div>
+
+            <!-- Recommended Safe Evacuation Corridor Box -->
+            <div style="margin-top: 14px; background: var(--bg-card); border: 1px solid #10B981; border-radius: var(--radius-md); padding: 12px;" id="fireEvacRouteBox">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                <span style="font-size: 0.75rem; color: #34D399; font-weight: 700;">AUTONOMOUS SAFE EVACUATION CORRIDOR</span>
+                <span class="road-badge safe">UPWIND SECURE</span>
+              </div>
+              <strong style="color: #ffffff; font-size: 0.85rem;" id="fireEvacRouteText">
+                MANDATORY UPWIND CORRIDOR: South-West via Industrial Parkway #8
+              </strong>
+            </div>
+
+            <!-- Emergency Multi-Agency Dispatch Hub -->
+            <div style="margin-top: 16px;">
+              <button type="button" class="btn-signin-submit" id="btnBroadcastFire" onclick="app.broadcastFireAlert()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+                <span>Dispatch Hazmat Brigade & Hospital Burn Unit</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SELF-ADAPTIVE REAL-TIME LOG TERMINAL DRAWER
+           ==================================================================== -->
+      <div class="adaptive-log-drawer" id="adaptiveLogDrawer">
+        <div class="log-drawer-header">
+          <h4>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2">
+              <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+            </svg>
+            <span>SELF-ADAPTIVE DISASTER RESPONSE ENGINE – REAL-TIME EVENT STREAM</span>
+          </h4>
+          <span style="font-size: 0.72rem; color: #34D399; font-family: var(--font-mono);">● ENGINE ONLINE (30Hz TELEMETRY)</span>
+        </div>
+        <div class="log-stream-box" id="adaptiveLogStream">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+    </main>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- MODAL CONFIRMATION DIALOG -->
+    <div class="modal-overlay" id="commonModal">
+      <div class="modal-container">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <div class="disaster-icon-box icon-accident" id="modalIconBox">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 id="modalTitle">Emergency Dispatch Confirmation</h3>
+            <p id="modalSubtitle" style="font-size: 0.78rem;">Notification broadcast successfully registered</p>
+          </div>
+        </div>
+        <div id="modalBody" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
+          Dispatch order confirmed.
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="nav-btn btn-primary" onclick="app.closeModal()">Acknowledge & Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- APPLICATION SCRIPTS -->
+  <script src="js/audio.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/adaptiveEngine.js"></script>
+  <script src="js/mapRenderer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

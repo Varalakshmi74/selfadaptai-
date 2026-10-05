@@ -1,0 +1,21 @@
+{
+  "name": "selfadapt-ai-disaster-management",
+  "version": "1.0.0",
+  "description": "SELFADAPT AI – Intelligent Disaster Response & Emergency Management System (Flood, Road Accident, Fire)",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -p 3000 .",
+    "dev": "npx serve -p 3000 .",
+    "open": "start index.html"
+  },
+  "keywords": [
+    "disaster-management",
+    "emergency-response",
+    "self-adaptive-ai",
+    "flood-prediction",
+    "accident-dispatch",
+    "fire-hazmat"
+  ],
+  "author": "Officer Varalakshmi",
+  "license": "MIT"
+}
